@@ -1,3 +1,56 @@
+
+service: rest-api
+
+provider:
+  name: aws
+  runtime: nodejs6.10 # setting node.js runtime
+  memorySize: 128 # setting the maximum memory of the Lambdas in MB
+  timeout: 10 # setting to 10 seconds (default is 6 seconds)
+  stage: dev # setting the env stage to dev, this will be visible in the routes
+  region: us-east-1
+
+functions: # 4 CRUD functions
+  create:
+    handler: handler.create # point to exported create function in handler.js
+    events:
+      - http:
+          path: notes # path will be example.com/dev/notes
+          method: post
+          cors: true
+  getOne:
+    handler: handler.getOne
+    events:
+      - http:
+          path: notes/{id} # path will be example.com/dev/notes/1
+          method: get
+          cors: true
+  getAll:
+    handler: handler.getAll # path will be example.com/dev/notes
+    events:
+     - http:
+         path: notes
+         method: get
+         cors: true
+  update:
+    handler: handler.update # path will be example.com/dev/notes/1
+    events:
+     - http:
+         path: notes/{id}
+         method: put
+         cors: true
+  delete:
+    handler: handler.delete
+    events:
+     - http:
+         path: notes/{id} # path will be example.com/dev/notes/1
+         method: delete
+         cors: true
+
+plugins:
+- serverless-offline # adding the plugin to be able to run the offline emulation
+
+
+
 # Welcome to Serverless!
 #
 # This file is the main config file for your service.
@@ -11,15 +64,15 @@
 #
 # Happy Coding!
 
-service: rest-api
+# service: rest-api
 
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
 # frameworkVersion: "=X.X.X"
 
-provider:
-  name: aws
-  runtime: nodejs6.10
+# provider:
+#   name: aws
+#   runtime: nodejs6.10
 
 # you can overwrite defaults here
 #  stage: dev
@@ -54,9 +107,9 @@ provider:
 #    - exclude-me.js
 #    - exclude-me-dir/**
 
-functions:
-  hello:
-    handler: handler.hello
+# functions:
+#   hello:
+#     handler: handler.hello
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
